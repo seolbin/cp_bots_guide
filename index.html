@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>블로그 봇 설정 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A single-page, task-oriented guide. It features an interactive checklist for prerequisites with direct links, and a persona section with a 'copy-to-clipboard' feature and an explanatory accordion. This structure is more actionable and user-friendly than the original linear document, guiding the user through setup tasks efficiently. -->
+    <!-- Visualization & Content Choices: Prerequisites -> Goal: Guide user -> Presentation: Interactive Checklist Cards -> Interaction: Clickable links as buttons, visual step counters. Justification: Action-oriented, tracks progress. Persona -> Goal: Easy copying -> Presentation: Styled code block + Accordion -> Interaction: 'Copy' button, expand/collapse details. Justification: Simplifies user task, adds educational value. All implemented with HTML/Tailwind/JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .task-card {
+            background-color: #FFFFFF;
+            border: 1px solid #EAE2D9;
+            transition: all 0.3s ease;
+        }
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .btn-primary {
+            background-color: #E6A46A;
+            color: #FFFFFF;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #D68F5A;
+        }
+        .code-block {
+            background-color: #2E2E2E;
+            color: #F0F0F0;
+            border: 1px solid #EAE2D9;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .accordion-item.active .accordion-content {
+            max-height: 500px;
+        }
+        .accordion-title svg {
+            transition: transform 0.3s ease;
+        }
+        .accordion-item.active .accordion-title svg {
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#D68F5A] mb-2">블로그 봇 설정 가이드</h1>
+            <p class="text-lg text-gray-600">몇 가지 간단한 설정을 완료하고, 편리한 자동 포스팅을 시작해보세요!</p>
+        </header>
+
+        <main>
+            <section id="prerequisites" class="mb-16">
+                <h2 class="text-3xl font-bold border-b-2 border-[#E6A46A] pb-2 mb-8">⚙️ 1. 필수 사전 준비</h2>
+                <div class="space-y-6">
+                    <!-- Task 1: Naver ID -->
+                    <div class="task-card rounded-xl p-6 shadow-sm">
+                        <div class="flex items-start space-x-4">
+                            <div class="text-3xl font-bold text-[#E6A46A]">1</div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">네이버 아이디 준비</h3>
+                                <p class="mb-3 text-gray-700">봇이 블로그에 안전하게 로그인하기 위해 전용 아이디를 준비해야 합니다.</p>
+                                <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                    <li><span class="font-semibold">2단계 인증 해제:</span> 봇이 로그인할 수 있도록 2단계 인증이 해제되어야 합니다.</li>
+                                    <li><span class="font-semibold">새 아이디 사용 권장:</span> 보안을 위해 봇 전용 아이디를 새로 만드는 것을 강력히 추천합니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Task 2: Coupang Partners -->
+                    <div class="task-card rounded-xl p-6 shadow-sm">
+                        <div class="flex items-start space-x-4">
+                            <div class="text-3xl font-bold text-[#E6A46A]">2</div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">쿠팡 파트너스 API 키 발급</h3>
+                                <p class="mb-4 text-gray-700">모든 포스팅에 수익 링크를 포함하기 위해 쿠팡 파트너스 API 키가 필요합니다.</p>
+                                <ol class="list-decimal list-inside space-y-2 mb-4 text-gray-600">
+                                    <li>쿠팡 파트너스 로그인 후, [추가 기능 > 파트너스 API] 메뉴로 이동합니다.</li>
+                                    <li>`Access Key`와 `Secret Key`를 생성하고, 두 키를 모두 복사하여 보관해주세요.</li>
+                                </ol>
+                                <a href="https://partners.coupang.com/" target="_blank" class="inline-block btn-primary font-bold py-2 px-4 rounded-lg">
+                                    쿠팡 파트너스 바로가기 ➡️
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Task 3: Gemini API -->
+                    <div class="task-card rounded-xl p-6 shadow-sm">
+                        <div class="flex items-start space-x-4">
+                            <div class="text-3xl font-bold text-[#E6A46A]">3</div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Gemini API 키 발급</h3>
+                                <p class="mb-4 text-gray-700">Google의 Gemini AI가 블로그 원고를 생성하기 위해 API 키가 필요합니다.</p>
+                                <ol class="list-decimal list-inside space-y-2 mb-4 text-gray-600">
+                                    <li>Google AI Studio 사이트에 구글 계정으로 로그인합니다.</li>
+                                    <li>"Get API Key" 또는 "Create API Key" 버튼을 클릭하여 새 키를 생성합니다.</li>
+                                    <li><span class="font-semibold text-red-500">⚠️ 중요:</span> 과금 정보(Billing)를 등록하지 않고 무료 등급으로만 사용하세요.</li>
+                                </ol>
+                                <a href="https://aistudio.google.com/" target="_blank" class="inline-block btn-primary font-bold py-2 px-4 rounded-lg">
+                                    Google AI Studio 바로가기 ➡️
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="persona-example">
+                <h2 class="text-3xl font-bold border-b-2 border-[#E6A46A] pb-2 mb-8">✍️ 2. 기본 페르소나 예시</h2>
+                <p class="mb-8 text-gray-700">아래 각 항목의 텍스트를 복사하여 봇 설정 창의 해당 필드에 붙여넣으세요.<br>AI가 이 내용들을 조합하여 자연스러운 리뷰 스타일의 글을 생성해 줄 것입니다.</p>
+                
+                <div id="persona-items-container" class="space-y-8">
+                    <!-- 페르소나 아이템들이 여기에 동적으로 추가됩니다 -->
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const personaData = {
+            "🎨 블로그 페르소나": "너는 '리뷰 탐험가'라는 이름의 IT/생활용품 전문 블로거야. 너의 목표는 독자들이 복잡한 제품의 장단점을 쉽게 이해하고, 현명한 소비를 할 수 있도록 돕는 것이야. 너는 항상 객관적인 정보를 바탕으로, 친절하고 신뢰감 있는 전문가처럼 설명해 줘.",
+            "✒️ 타이틀 스타일": "제품의 핵심 기능이나 가장 큰 장점을 명확하게 보여주는 정보성 제목을 작성해 줘. (예: \"광활한 화면과 압도적 성능, OO 게이밍 모니터 솔직 후기\", \"매일 아침 호텔 침구처럼, OO 토퍼 사용기\")",
+            "🚀 인트로 스타일": "이 제품이 필요한 사람들의 일반적인 '문제 상황'이나 '고민'을 언급하며 글을 시작해 줘. \"혹시 ~ 때문에 고민하고 계신가요?\" 와 같은 표현으로 독자의 공감을 얻는 것이 좋아.",
+            "📖 본문 스타일": "입력된 리뷰 내용들을 바탕으로, 이 제품의 '핵심 기능', '주요 장점', 그리고 '알아두면 좋을 점(단점)'을 명확한 소제목으로 구분해서 설명해 줘. 각 항목을 논리적이고 체계적으로 정리해서 전달해 줘.",
+            "🏁 결론 스타일": "글 전체 내용을 간결하게 요약하고, '이런 분들께 추천합니다' 와 '이런 점은 고려해 보세요' 와 같이 최종 가이드를 제시하며 마무리해 줘.",
+            "💬 톤앤매너": "항상 독자를 존중하는, 차분하고 신뢰감 있는 존댓말(~입니다, ~합니다)을 사용해 줘. 전문적인 느낌을 주되, 어려운 용어는 쉽게 풀어서 설명해 줘. 감정적인 이모티콘(😂, ㅠㅠ) 대신, 정보를 강조하는 이모티콘(✔️, ✨, 💡)을 적절히 사용해 줘.",
+            "🚫 추가 요청사항": "- 글자 수는 전체적으로 1000자 내외로 조절해줘.\n- 마지막에는 구매 유도 문구를 자연스럽게 포함해줘.\n- 문장의 마지막이 되면 무조건 줄바꿈을 2개 넣어\n- \"여기에 제품 이미지 삽입 예정\" 이런 문구는 넣지마.\n- \"내돈내산\" 문구는 사용금지\n- 허위·과장 광고 금지 (“먹으면 무조건 살 빠짐” 같은 표현 사용금지)"
+        };
+        
+        const personaContainer = document.getElementById('persona-items-container');
+
+        Object.entries(personaData).forEach(([title, content]) => {
+            const personaItem = document.createElement('div');
+            personaItem.innerHTML = `
+                <h3 class="text-xl font-bold mb-3">${title}</h3>
+                <div class="code-block rounded-xl shadow-lg">
+                    <div class="flex justify-between items-center p-3 border-b border-gray-600">
+                        <span class="text-sm font-semibold text-gray-400">복사하여 사용하세요</span>
+                        <button class="copy-btn bg-gray-600 hover:bg-gray-500 text-white font-bold py-1 px-3 rounded-md text-sm transition-all flex items-center">
+                            <span class="copy-text">복사</span>
+                            <span class="copy-success hidden">✓ 복사 완료!</span>
+                        </button>
+                    </div>
+                    <pre class="p-4 whitespace-pre-wrap"><code class="persona-text">${content}</code></pre>
+                </div>
+            `;
+            personaContainer.appendChild(personaItem);
+        });
+
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const btn = e.currentTarget;
+                const codeBlock = btn.closest('.code-block');
+                const textToCopy = codeBlock.querySelector('.persona-text').innerText;
+                
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = textToCopy;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                
+                const copyTextSpan = btn.querySelector('.copy-text');
+                const successTextSpan = btn.querySelector('.copy-success');
+
+                copyTextSpan.classList.add('hidden');
+                successTextSpan.classList.remove('hidden');
+
+                setTimeout(() => {
+                    copyTextSpan.classList.remove('hidden');
+                    successTextSpan.classList.add('hidden');
+                }, 2000);
+            });
+        });
+
+    </script>
+
+</body>
+</html>
+
