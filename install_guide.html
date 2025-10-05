@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>블로그 봇 설치 및 사용 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Soft Teal -->
+    <!-- Application Structure Plan: The linear text manual is transformed into a visually distinct, step-by-step interactive guide using cards. This task-oriented structure breaks down the complex setup process into four manageable stages (License, Installation, Extension Setup, Usage), improving user comprehension and reducing cognitive load. Each card is a self-contained task, guiding the user through the setup flow more effectively than a long document. -->
+    <!-- Visualization & Content Choices: Report Info: Step-by-step instructions -> Goal: Guide user through setup -> Viz/Presentation Method: Interactive numbered cards with icons and embedded images -> Interaction: Click-to-copy for URLs. Justification: This turns a passive manual into an active checklist, making the process less intimidating and easier to follow. Visual aids (provided screenshots) are integrated directly where they are needed. All implemented using HTML/Tailwind/JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .step-card {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+        .step-number {
+            background-color: #20c997;
+            color: white;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .btn {
+            transition: all 0.2s ease;
+        }
+        .btn-copy {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+        .btn-copy:hover {
+            background-color: #ced4da;
+        }
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .has-tooltip:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-3">블로그 봇 설치 및 사용 가이드</h1>
+            <p class="text-lg text-gray-600">안녕하세요! 이 가이드를 따라 몇 가지 설정을 완료하고, 편리한 자동 포스팅을 시작해보세요.</p>
+        </header>
+
+        <div class="space-y-12">
+            <!-- Step 1: 라이센스 발급 -->
+            <div id="step1" class="step-card rounded-xl p-6 md:p-8 shadow-md">
+                <div class="flex items-start space-x-6">
+                    <div class="step-number flex-shrink-0">1</div>
+                    <div>
+                        <h2 class="text-2xl font-bold mb-3">🔑 라이센스 발급</h2>
+                        <p class="text-gray-700">프로그램 사용을 위해 고유 라이센스 키가 필요합니다.</p>
+                        <ul class="mt-4 list-disc list-inside space-y-2 bg-blue-50 p-4 rounded-lg border border-blue-200">
+                            <li><span class="font-semibold">요청 방법:</span> 담당자에게 사용하실 **네이버 ID**를 알려주세요.</li>
+                            <li><span class="font-semibold">사용 기간:</span> 발급일로부터 **6개월**간 유효합니다.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: 프로그램 설치 및 PC 설정 -->
+            <div id="step2" class="step-card rounded-xl p-6 md:p-8 shadow-md">
+                <div class="flex items-start space-x-6">
+                    <div class="step-number flex-shrink-0">2</div>
+                    <div>
+                        <h2 class="text-2xl font-bold mb-3">💻 프로그램 설치 및 PC 설정</h2>
+                        <p class="mb-4 text-gray-700">자동 포스팅이 중단되지 않도록 프로그램을 설치하고 PC의 전원 설정을 변경합니다.</p>
+                        <h3 class="font-bold text-lg mb-2">프로그램 설치</h3>
+                        <ol class="list-decimal list-inside space-y-2 mb-6">
+                            <li>전달받으신 `cp_bloger-v1.1.0.exe` 파일을 실행하여 설치를 진행합니다.</li>
+                            <li>설치가 완료되면 바탕화면에 생성된 바로가기를 통해 프로그램을 실행할 수 있습니다.</li>
+                        </ol>
+                        <h3 class="font-bold text-lg mb-2 text-red-600">⚠️ 설치 시 유의사항 (PC 전원 설정)</h3>
+                        <p class="mb-3 text-gray-600">봇이 24시간 안정적으로 동작하려면 PC가 절전 모드로 진입하거나 꺼지면 안 됩니다.</p>
+                        <ul class="list-disc list-inside space-y-2">
+                           <li>**데스크탑/노트북 공통:** `제어판 > 전원 옵션`에서 디스플레이 끄기 및 절전 모드 진입 시간을 **'해당 없음'**으로 설정하세요.</li>
+                           <li>**노트북만 해당:** '덮개를 닫을 때의 작동 설정'에서 '덮개를 닫을 때' 옵션을 **'아무것도 안 함'**으로 변경하세요.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: 크롬 확장 프로그램 -->
+            <div id="step3" class="step-card rounded-xl p-6 md:p-8 shadow-md">
+                <div class="flex items-start space-x-6">
+                    <div class="step-number flex-shrink-0">3</div>
+                    <div>
+                        <h2 class="text-2xl font-bold mb-3">🛒 상품 수집 (크롬 확장 프로그램)</h2>
+                        <p class="mb-6 text-gray-700">원하는 쿠팡 상품을 클릭 한 번으로 수집하기 위해 크롬 확장 프로그램을 설치합니다.</p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="font-bold text-lg mb-2">3-1. 확장 프로그램 설치</h3>
+                                <ol class="list-decimal list-inside space-y-3">
+                                    <li>`cp_bloger_chrome_app.zip` 압축 파일을 해제합니다. (C 드라이브에 `chrome_app` 폴더를 만들어 관리하는 것을 추천합니다.)</li>
+                                    <li>크롬 브라우저 주소창에 아래 주소를 복사하여 붙여넣고 이동합니다.
+                                        <div class="relative my-2">
+                                            <input type="text" id="chrome-url" value="chrome://extensions/" readonly class="w-full bg-gray-100 p-2 rounded-md border border-gray-300">
+                                            <button onclick="copyToClipboard('chrome-url')" class="absolute right-2 top-1/2 -translate-y-1/2 btn btn-copy text-xs px-2 py-1 rounded">복사</button>
+                                        </div>
+                                    </li>
+                                    <li>페이지 오른쪽 상단의 **'개발자 모드'** 스위치를 켭니다.</li>
+                                    <li><img src="0.크롬확장프로그램에서_로드.png" alt="압축해제된 확장 프로그램을 로드합니다" class="my-2 rounded-md border shadow-sm w-full max-w-md"></li>
+                                    <li>왼쪽 상단의 **"압축해제된 확장 프로그램을 로드합니다"** 버튼을 클릭하고, 1번에서 압축 해제한 폴더를 선택합니다.</li>
+                                </ol>
+                            </div>
+
+                            <div>
+                                <h3 class="font-bold text-lg mt-6 mb-2">3-2. 인증 정보 설정</h3>
+                                <ol class="list-decimal list-inside space-y-3">
+                                    <li>설치 후, 브라우저 오른쪽 위 퍼즐(🧩) 아이콘을 클릭하고 **'쿠팡 상품 수집기'**를 핀(📌)으로 고정하세요.</li>
+                                    <li><img src="1.크롬확장프로그램_라이센스입력후_연결테스트.png" alt="라이센스 입력" class="my-2 rounded-md border shadow-sm w-full max-w-sm"></li>
+                                    <li>고정된 아이콘을 클릭하여 발급받은 **'라이센스 키'**와 **'네이버 ID'**를 입력합니다.</li>
+                                    <li>**'연결 테스트'** 성공을 확인한 후 **'저장'** 버튼을 누릅니다.</li>
+                                </ol>
+                            </div>
+
+                            <div>
+                                <h3 class="font-bold text-lg mt-6 mb-2">3-3. 상품 수집 방법</h3>
+                                 <ol class="list-decimal list-inside space-y-3">
+                                     <li>쿠팡 사이트의 상품 상세 페이지로 이동합니다.</li>
+                                     <li><img src="2.쿠팡상품페이지에서_상품수집을_눌러서_원하는_상품_수집.png" alt="상품 수집 버튼" class="my-2 rounded-md border shadow-sm w-full max-w-xs"></li>
+                                     <li>화면 오른쪽에 나타나는 **'상품 수집'** 버튼을 클릭하면 발행 대기 목록에 추가됩니다.</li>
+                                 </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Step 4: 블로그 자동 발행 -->
+            <div id="step4" class="step-card rounded-xl p-6 md:p-8 shadow-md">
+                <div class="flex items-start space-x-6">
+                    <div class="step-number flex-shrink-0">4</div>
+                    <div>
+                        <h2 class="text-2xl font-bold mb-3">✍️ 블로그 자동 발행</h2>
+                        <p class="text-gray-700">이제 모든 준비가 끝났습니다. 블로그 봇이 어떻게 동작하는지 알아보세요.</p>
+                        <ul class="mt-4 list-disc list-inside space-y-2">
+                            <li><span class="font-semibold">자동 발행:</span> 블로그 봇 프로그램의 **[설정]** 메뉴에서 지정한 시간에 맞춰 포스팅이 자동으로 시작됩니다.</li>
+                            <li><span class="font-semibold">기본 상품 발행:</span> 직접 수집한 상품이 모두 소진되었을 경우, 시스템에 미리 수집된 다른 상품을 찾아 자동으로 발행을 계속 진행합니다.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function copyToClipboard(elementId) {
+            const input = document.getElementById(elementId);
+            input.select();
+            input.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            
+            const button = input.nextElementSibling;
+            const originalText = button.innerText;
+            button.innerText = '복사 완료!';
+            setTimeout(() => {
+                button.innerText = originalText;
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
